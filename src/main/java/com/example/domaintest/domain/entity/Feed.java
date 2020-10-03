@@ -8,7 +8,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 public class Feed {
 
@@ -21,11 +22,21 @@ public class Feed {
     @JoinColumn(name = "member_sid")
     private Member member;
 
-    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL)
+    // not duplex, simplex
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "feed_sid")
     private List<FeedLike> feedLike = new ArrayList<>();
 
     @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL)
     private List<Reply> reply = new ArrayList<>();
 
     private String text;
+
+//    @Override
+//    public String toString() {
+//        return "Feed{" +
+//                "feedSid=" + feedSid +
+//                ", text='" + text + '\'' +
+//                '}';
+//    }
 }

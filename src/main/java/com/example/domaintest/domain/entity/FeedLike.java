@@ -1,23 +1,18 @@
 package com.example.domaintest.domain.entity;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @Entity
-@IdClass(FeedLikePk.class)
+@NoArgsConstructor
 public class FeedLike {
     @Id
-    @ManyToOne
-    @JoinColumn(name = "feed_sid")
-    private Feed feed;
+    private Long memberSid;
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "member_sid")
-    private Member member;
-
+    public FeedLike(Member member) {
+        this.memberSid = member.getMemberSid();
+    }
 }

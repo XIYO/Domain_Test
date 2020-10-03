@@ -22,5 +22,4 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
                     "from Member m ")
     Page<MemberDto> findAllMemberDto(Pageable pageable);
 
-//    List<Member> findAll();
 }

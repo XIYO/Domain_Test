@@ -15,8 +15,4 @@ public class ReplyController {
     @Autowired
     ReplyRepository replyRepository;
 
-//    @GetMapping("reply")
-//    public Page<ReplyDto> getReplyPage(Pageable pageable) {
-//        return replyRepository.findAllDto(pageable);
-//    }
 }
