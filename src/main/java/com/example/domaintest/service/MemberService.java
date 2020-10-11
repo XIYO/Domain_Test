@@ -3,41 +3,33 @@ package com.example.domaintest.service;
 import com.example.domaintest.domain.dto.FeedDto;
 import com.example.domaintest.domain.dto.MemberDto;
 import com.example.domaintest.domain.dto.ReplyDto;
-import com.example.domaintest.domain.dto.TestEntityDto;
-import com.example.domaintest.domain.entity.Member;
 import com.example.domaintest.domain.repository.FeedRepository;
 import com.example.domaintest.domain.repository.MemberRepository;
 import com.example.domaintest.domain.repository.ReplyRepository;
-import com.example.domaintest.domain.repository.TestEntityRepository;
 import com.example.domaintest.domain.vo.MemberFeedReplyVo;
-import com.example.domaintest.domain.vo.MemberTestEntityVo;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.domaintest.domain.vo.MemberVo;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class MemberService {
+    final MemberRepository memberRepository;
+    final FeedRepository feedRepository;
+    final ReplyRepository replyRepository;
 
-    @Autowired
-    EntityManager entityManager;
-
-    @Autowired
-    MemberRepository memberRepository;
-
-    @Autowired
-    FeedRepository feedRepository;
-
-    @Autowired
-    ReplyRepository replyRepository;
-
-    @Autowired
-    TestEntityRepository testEntityRepository;
+//    @AllArgsConstructor 가 생성
+//    public MemberService(MemberRepository memberRepository, FeedRepository feedRepository, ReplyRepository replyRepository) {
+//        this.memberRepository = memberRepository;
+//        this.feedRepository = feedRepository;
+//        this.replyRepository = replyRepository;
+//    }
 
     public Page<MemberFeedReplyVo> getMemberVo(Pageable pageableMember, Pageable pageableFeed, Pageable pageableReply) {
         Page<MemberDto> memberDtoPage;
@@ -56,39 +48,7 @@ public class MemberService {
         return new PageImpl<>(memberFeedReplyVoList, memberDtoPage.getPageable(), memberDtoPage.getTotalElements());
     }
 
-    public Page<MemberTestEntityVo> getMemberVoTest(Pageable pageable) {
-        Page<MemberDto> memberDtoPage;
-        List<TestEntityDto> testEntityDtoList;
-
-        List<MemberTestEntityVo> memberTestEntityVoList = new ArrayList<>();
-        Page<MemberTestEntityVo> memberTestEntityVoPage;
-
-        // find
-        memberDtoPage = memberRepository.findAllMemberDto(pageable);
-
-        for (MemberDto memberDto : memberDtoPage) {
-            testEntityDtoList = testEntityRepository.findAllById(memberDto.getMemberSid());
-            memberTestEntityVoList.add(new MemberTestEntityVo(memberDto, testEntityDtoList));
-        }
-
-        // List to Page
-        memberTestEntityVoPage = new PageImpl<>(memberTestEntityVoList, memberDtoPage.getPageable(), memberDtoPage.getTotalElements());
-        return memberTestEntityVoPage;
-    }
-
-//    public Page<MemberTestEntityVo> getMemberVo()
-
-    public List<MemberDto> getMember() {
-//        String query = "select new com.example.domaintest.domain.dto.MemberDto( " +
-//                "m.memberSid " +
-//                ", m.memberNickname " +
-//                ", size(m.feedList) " +
-//                ", size(m.replyList)) " +
-//                ", m.testEntityList " +
-//                "from Member m";
-//
-//        return entityManager.createQuery(query, MemberDto.class)
-//                .getResultList();
-        return null;
+    public Page<MemberVo> memberVoPages(Pageable pageable) {
+        return memberRepository.findAllByMemberSidNotNull(pageable);
     }
 }

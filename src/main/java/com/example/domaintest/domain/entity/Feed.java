@@ -1,7 +1,7 @@
 package com.example.domaintest.domain.entity;
 
-import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,7 +11,8 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Feed {
+@NoArgsConstructor
+public class Feed extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,19 +25,23 @@ public class Feed {
 
     // not duplex, simplex
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "feed_sid")
-    private List<FeedLike> feedLike = new ArrayList<>();
+    @JoinColumn(name = " feed_sid")
+    private List<FeedGood> feedGood = new ArrayList<>();
 
     @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL)
     private List<Reply> reply = new ArrayList<>();
 
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL)
+    private List<FeedGood> feedGoods = new ArrayList<>();
+
     private String text;
 
-//    @Override
-//    public String toString() {
-//        return "Feed{" +
-//                "feedSid=" + feedSid +
-//                ", text='" + text + '\'' +
-//                '}';
-//    }
+    public Feed(Member member) {
+        this.member = member;
+        this.text = "feed write by " + member.getMemberNickname();
+    }
+
+    public Feed(String s) {
+        this.text = s;
+    }
 }

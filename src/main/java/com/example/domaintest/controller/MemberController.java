@@ -3,7 +3,7 @@ package com.example.domaintest.controller;
 import com.example.domaintest.domain.dto.MemberDto;
 import com.example.domaintest.domain.repository.MemberRepository;
 import com.example.domaintest.domain.vo.MemberFeedReplyVo;
-import com.example.domaintest.domain.vo.MemberTestEntityVo;
+import com.example.domaintest.domain.vo.MemberVo;
 import com.example.domaintest.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,15 +31,15 @@ public class MemberController {
         return memberRepository.findAllMemberDto(pageable);
     }
 
-    @GetMapping("memberTest003")
-    public Page<MemberTestEntityVo> getMemberTest003(Pageable pageable) {
-        return memberService.getMemberVoTest(pageable);
-    }
-
     @GetMapping("memberTest004")
     public Page<MemberFeedReplyVo> getMemberTest004(@Qualifier("member") Pageable pageableMember,
                                                     @Qualifier("feed") Pageable pageableFeed,
                                                     @Qualifier("reply") Pageable pageableReply) {
         return memberService.getMemberVo(pageableMember, pageableFeed, pageableReply);
+    }
+
+    @GetMapping("memberTest005")
+    public Page<MemberVo> getMemberTest005(Pageable pageable) {
+        return memberService.memberVoPages(pageable);
     }
 }

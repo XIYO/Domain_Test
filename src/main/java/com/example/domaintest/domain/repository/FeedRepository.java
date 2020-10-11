@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface FeedRepository extends JpaRepository<Feed, Long> {
 
-    @Query(value = "select new com.example.domaintest.domain.dto.FeedDto(f.feedSid, f.text, f.feedLike.size, f.reply.size) " +
+    @Query(value = "select new com.example.domaintest.domain.dto.FeedDto(f.feedSid, f.text, f.feedGood.size, f.reply.size) " +
             "from Feed f " +
             "where f.member.memberSid = :memberSid")
     Page<FeedDto> findByMemberSidDto(Long memberSid, Pageable pageable);

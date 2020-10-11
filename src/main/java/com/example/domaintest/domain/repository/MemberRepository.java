@@ -2,6 +2,7 @@ package com.example.domaintest.domain.repository;
 
 import com.example.domaintest.domain.dto.MemberDto;
 import com.example.domaintest.domain.entity.Member;
+import com.example.domaintest.domain.vo.MemberVo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +23,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
                     "from Member m ")
     Page<MemberDto> findAllMemberDto(Pageable pageable);
 
+    @Query(value = "select new com.example.domaintest.domain.vo.MemberVo(m.memberSid, m.memberNickname) " +
+            "from Member m ")
+    Page<MemberVo> findAllByMemberSidNotNull(Pageable pageable);
 }
